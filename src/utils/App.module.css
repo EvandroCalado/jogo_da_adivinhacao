@@ -5,3 +5,20 @@
   justify-content: center;
   align-items: center;
 }
+
+.container main {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  background-color: #ffffff;
+  padding: 2rem;
+  padding-top: 4.5rem;
+  border-radius: 0.75rem;
+}
+
+.container .word {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
