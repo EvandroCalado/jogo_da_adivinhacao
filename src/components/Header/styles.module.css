@@ -1,0 +1,41 @@
+.container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3.25rem;
+}
+
+.container > img {
+  height: 3.75rem;
+}
+
+.container > .restart {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.container > .restart > button {
+  border: none;
+  background: transparent;
+}
+
+.container > .restart > span {
+  font-size: 1.12rem;
+  color: #9b9b9b;
+}
+
+.container > .restart > span strong {
+  font-size: 1.37rem;
+  color: #e8891c;
+}
+
+.container > .restart > button img {
+  height: 2rem;
+  transition: scale 0.2s ease-in-out;
+}
+
+.container > .restart > button:hover img {
+  scale: 1.1;
+}
