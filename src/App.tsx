@@ -28,7 +28,7 @@ function App() {
     setScore(0);
   };
 
-  const maxAttempts = Math.round(challenge?.word.length * 1.7);
+  const maxAttempts = Math.round((challenge?.word.length ?? 0) * 1.7);
 
   const handleConfirm = () => {
     if (!challenge) return;
@@ -87,7 +87,7 @@ function App() {
           max={maxAttempts}
           onRestart={startGame}
         />
-        <Tip tip={challenge?.tip} />
+        {challenge && <Tip tip={challenge.tip} />}
 
         <div className={styles.word}>
           {challenge?.word.split("").map((letter, index) => {
