@@ -1,4 +1,5 @@
 import { Header } from "./components/Header";
+import { Input } from "./components/Input";
 import { Letter } from "./components/Letter";
 import { Tip } from "./components/Tip";
 import styles from "./utils/App.module.css";
@@ -20,6 +21,14 @@ function App() {
           <Letter value="a" />
           <Letter value="c" />
           <Letter value="t" />
+        </div>
+
+        <div>
+          <h4>Palpite</h4>
+
+          <div>
+            <Input autoFocus maxLength={1} placeholder="?" />
+          </div>
         </div>
       </main>
     </div>
