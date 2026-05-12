@@ -4,100 +4,36 @@ import { Button } from "./components/Button";
 import { Header } from "./components/Header";
 import { Input } from "./components/Input";
 import { Letter } from "./components/Letter";
-import { Letters, type LetterType } from "./components/Letters";
+import { Letters } from "./components/Letters";
 import { Tip } from "./components/Tip";
 import styles from "./App.module.css";
-import { WORDS, type Challenge } from "./utils/words";
-
-const GUESS_FACTOR = 1.7;
-
-const pickRandomWord = (): Challenge => {
-  const index = Math.floor(Math.random() * WORDS.length);
-  return WORDS[index];
-};
+import { useGame } from "./hooks/useGame";
 
 function App() {
   const [letter, setLetter] = useState("");
-  const [letters, setLetters] = useState<LetterType[]>([]);
-  const [score, setScore] = useState(0);
-  const [attempts, setAttempts] = useState(0);
-  const [showConfetti, setShowConfetti] = useState(false);
-  const [showGameOver, setShowGameOver] = useState(false);
-  const [challenge, setChallenge] = useState<Challenge>(pickRandomWord);
   const inputRef = useRef<HTMLInputElement>(null);
   const modalRef = useRef<HTMLDivElement>(null);
 
-  const maxAttempts = Math.round((challenge.word.length ?? 0) * GUESS_FACTOR);
-
-  const startGame = () => {
-    setChallenge(pickRandomWord());
-    setLetter("");
-    setLetters([]);
-    setScore(0);
-    setAttempts(0);
-    setShowConfetti(false);
-    setShowGameOver(false);
-    inputRef.current?.focus();
-  };
-
-  const handleRestart = () => {
-    if (attempts > 0 && !showGameOver && !showConfetti) {
-      setShowGameOver(true);
-    } else {
-      startGame();
-    }
-  };
+  const {
+    letters,
+    attempts,
+    showConfetti,
+    showGameOver,
+    challenge,
+    maxAttempts,
+    normalizedWord,
+    startGame,
+    handleRestart,
+    confirmLetter,
+  } = useGame();
 
   const handleConfirm = () => {
     if (!letter.trim()) {
       alert("Digite uma letra!");
       return;
     }
-
-    const value = letter
-      .normalize("NFD")
-      .replace(/\p{Diacritic}/gu, "")
-      .toLocaleUpperCase("pt-BR");
-
-    const newAttempts = attempts + 1;
-    setAttempts(newAttempts);
-
-    const existsLetter = letters.find((l) => l.value === value);
-
-    if (existsLetter) {
-      if (newAttempts >= maxAttempts) {
-        setShowGameOver(true);
-      }
-      setLetter("");
-      inputRef.current?.focus();
-      return;
-    }
-
-    const normalizedWord = challenge.word
-      .normalize("NFD")
-      .replace(/\p{Diacritic}/gu, "")
-      .toLocaleUpperCase("pt-BR");
-
-    const hit = normalizedWord
-      .split("")
-      .filter((char) => char === value).length;
-    const correct = hit > 0;
-    const currentScore = score + hit;
-    const updatedLetters = [...letters, { value, correct }];
-
-    setLetters(updatedLetters);
-    setScore(currentScore);
+    confirmLetter(letter);
     setLetter("");
-
-    if (currentScore >= challenge.word.length && currentScore > 0) {
-      setShowConfetti(true);
-      return;
-    }
-
-    if (newAttempts >= maxAttempts) {
-      setShowGameOver(true);
-    }
-
     inputRef.current?.focus();
   };
 
@@ -106,11 +42,6 @@ function App() {
       handleConfirm();
     }
   };
-
-  const normalizedWord = challenge.word
-    .normalize("NFD")
-    .replace(/\p{Diacritic}/gu, "")
-    .toLocaleUpperCase("pt-BR");
 
   return (
     <>

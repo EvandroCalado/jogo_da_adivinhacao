@@ -1,75 +1,45 @@
-# React + TypeScript + Vite
+# Jogo da Adivinhação
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Jogo de adivinhação de palavras em português. O jogador tenta adivinhar letra por letra uma palavra sorteada, com dicas e número limitado de tentativas.
 
-Currently, two official plugins are available:
+## Funcionalidades
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Mais de 500 palavras em português com dicas
+- Sistema de tentativas (maxAttempts = `round(word.length * 1.7)`)
+- Contagem total de palpites (incluindo repetidos)
+- Confetes ao vencer
+- Modal de fim de jogo ao esgotar tentativas ou desistir
+- Suporte a acentos (normalização NFD)
+- Atalho de teclado (Enter para confirmar)
+- Botão de reiniciar com confirmação (mostra a palavra antes de reiniciar)
 
-## React Compiler
+## Tech Stack
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+- **React 19** com TypeScript
+- **Vite 8** (bundler)
+- **CSS Modules** (estilização)
+- **react-confetti** (efeito de vitória)
 
-Note: This will impact Vite dev & build performances.
+## Comandos
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+pnpm dev       # Servidor de desenvolvimento
+pnpm build     # Build de produção
+pnpm lint      # ESLint
+pnpm preview   # Preview do build
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Estrutura
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
 ```
+src/
+├── hooks/        # Lógica do jogo (useGame)
+├── components/   # Componentes React (Button, Header, Input, Letter, Letters, Tip)
+├── utils/        # Utilitários (normalize, words)
+├── App.tsx       # Componente principal (UI)
+└── main.tsx      # Entry point
+```
+
+## Licença
+
+MIT
