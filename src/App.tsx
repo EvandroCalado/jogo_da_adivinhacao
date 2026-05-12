@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import Confetti from "react-confetti";
 import { Button } from "./components/Button";
 import { Header } from "./components/Header";
 import { Input } from "./components/Input";
@@ -12,7 +13,7 @@ function App() {
   const [letter, setLetter] = useState("");
   const [letters, setLetters] = useState<LetterType[]>([]);
   const [score, setScore] = useState(0);
-
+  const [showConfetti, setShowConfetti] = useState(false);
   const [challenge, setChallenge] = useState<Challenge | null>(() => {
     const index = Math.floor(Math.random() * WORDS.length);
     return WORDS[index];
@@ -26,6 +27,7 @@ function App() {
     setLetter("");
     setLetters([]);
     setScore(0);
+    setShowConfetti(false);
   };
 
   const maxAttempts = Math.round((challenge?.word.length ?? 0) * 1.7);
@@ -66,63 +68,73 @@ function App() {
   useEffect(() => {
     if (!challenge) return;
 
-    setTimeout(() => {
-      if (letters.length === maxAttempts) {
-        alert(`Fim de jogo! A palavra era "${challenge.word.toUpperCase()}"`);
-        startGame();
-      }
+    if (letters.length === maxAttempts) {
+      alert(`Fim de jogo! A palavra era "${challenge.word.toUpperCase()}"`);
+      startGame();
+    }
 
-      if (score === challenge.word.length) {
-        alert("Parabéns! Você acertou a palavra!");
-        startGame();
-      }
-    }, 200);
+    if (score === challenge.word.length && score > 0) {
+      setShowConfetti(true);
+    }
   }, [score, letters, challenge, maxAttempts]);
 
   return (
-    <div className={styles.container}>
-      <main>
-        <Header
-          current={letters.length}
-          max={maxAttempts}
-          onRestart={startGame}
+    <>
+      {showConfetti && (
+        <Confetti
+          width={window.innerWidth}
+          height={window.innerHeight}
+          numberOfPieces={500}
+          recycle={false}
+          onConfettiComplete={() => {
+            startGame();
+          }}
         />
-        {challenge && <Tip tip={challenge.tip} />}
+      )}
+      <div className={styles.container}>
+        <main>
+          <Header
+            current={letters.length}
+            max={maxAttempts}
+            onRestart={startGame}
+          />
+          {challenge && <Tip tip={challenge.tip} />}
 
-        <div className={styles.word}>
-          {challenge?.word.split("").map((letter, index) => {
-            const found = letters.find(
-              (char) => char.value === letter.toUpperCase(),
-            );
+          <div className={styles.word}>
+            {challenge?.word.split("").map((letter, index) => {
+              const found = letters.find(
+                (char) => char.value === letter.toUpperCase(),
+              );
 
-            return (
-              <Letter
-                key={letter + index}
-                value={found?.value}
-                color={found?.correct ? "correct" : "default"}
-              />
-            );
-          })}
-        </div>
-
-        <div>
-          <h4>Palpite</h4>
-
-          <div className={styles.guess}>
-            <Input
-              autoFocus
-              maxLength={1}
-              placeholder="?"
-              value={letter}
-              onChange={(event) => setLetter(event.target.value)}
-            />
-            <Button onClick={handleConfirm}>Confirmar</Button>
+              return (
+                <Letter
+                  key={letter + index}
+                  value={found?.value}
+                  color={found?.correct ? "correct" : "default"}
+                />
+              );
+            })}
           </div>
-        </div>
 
-        <Letters letters={letters} />
-      </main>
-    </div>
+          <div>
+            <h4>Palpite</h4>
+
+            <div className={styles.guess}>
+              <Input
+                autoFocus
+                maxLength={1}
+                placeholder="?"
+                value={letter}
+                onChange={(event) => setLetter(event.target.value)}
+              />
+              <Button onClick={handleConfirm}>Confirmar</Button>
+            </div>
+          </div>
+
+          <Letters letters={letters} />
+        </main>
+      </div>
+    </>
   );
 }
 
