@@ -1,5 +1,4 @@
-import { useRef, useState } from "react";
-import Confetti from "react-confetti";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Button } from "./components/Button";
 import { Header } from "./components/Header";
 import { Input } from "./components/Input";
@@ -8,6 +7,9 @@ import { Letters } from "./components/Letters";
 import { Tip } from "./components/Tip";
 import styles from "./App.module.css";
 import { useGame } from "./hooks/useGame";
+import { useFocusTrap } from "./hooks/useFocusTrap";
+import { useDarkMode } from "./hooks/useDarkMode";
+import { fireWinConfetti } from "./utils/confetti";
 
 function App() {
   const [letter, setLetter] = useState("");
@@ -27,7 +29,27 @@ function App() {
     confirmLetter,
   } = useGame();
 
-  const handleConfirm = () => {
+  const { dark, toggle: toggleTheme } = useDarkMode();
+
+  useFocusTrap(modalRef, showGameOver || showConfetti);
+
+  useEffect(() => {
+    if (showConfetti) {
+      fireWinConfetti();
+    }
+  }, [showConfetti]);
+
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && (showGameOver || showConfetti)) {
+        startGame();
+      }
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, [showGameOver, showConfetti, startGame]);
+
+  const handleConfirm = useCallback(() => {
     if (!letter.trim()) {
       alert("Digite uma letra!");
       return;
@@ -35,7 +57,7 @@ function App() {
     confirmLetter(letter);
     setLetter("");
     inputRef.current?.focus();
-  };
+  }, [letter, confirmLetter]);
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter") {
@@ -43,27 +65,36 @@ function App() {
     }
   };
 
+  const lastGuess = letters[letters.length - 1];
+  const guessResult = lastGuess
+    ? lastGuess.correct
+      ? "correta"
+      : "incorreta"
+    : null;
+
   return (
     <>
-      {showConfetti && (
-        <Confetti
-          width={window.innerWidth}
-          height={window.innerHeight}
-          numberOfPieces={500}
-          recycle={false}
-          onConfettiComplete={startGame}
-        />
-      )}
-      {showGameOver && (
+      <div role="status" aria-live="polite" className="sr-only">
+        {guessResult && `Letra ${lastGuess.value} ${guessResult}`}
+        {showGameOver && `Fim de jogo. A palavra era ${challenge.word}`}
+        {showConfetti && "Você venceu!"}
+      </div>
+
+      {(showGameOver || showConfetti) && (
         <div
           className={styles.overlay}
           ref={modalRef}
           role="dialog"
           aria-modal="true"
-          aria-labelledby="gameover-title"
+          aria-labelledby="result-title"
         >
           <div className={styles.modal}>
-            <h2 id="gameover-title">Fim de jogo!</h2>
+            <h2
+              id="result-title"
+              className={showConfetti ? styles["win-title"] : ""}
+            >
+              {showConfetti ? "Parab\u00e9ns!" : "Fim de jogo!"}
+            </h2>
             <p>
               A palavra era: <strong>{challenge.word.toUpperCase()}</strong>
             </p>
@@ -73,7 +104,16 @@ function App() {
           </div>
         </div>
       )}
+
       <div className={styles.container}>
+        <button
+          className={styles["theme-toggle"]}
+          onClick={toggleTheme}
+          aria-label={dark ? "Tema claro" : "Tema escuro"}
+        >
+          {dark ? "\u2600\uFE0F" : "\uD83C\uDF19"}
+        </button>
+
         <main>
           <Header
             current={attempts}
