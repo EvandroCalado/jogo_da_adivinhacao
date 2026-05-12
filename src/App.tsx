@@ -2,6 +2,7 @@ import { Button } from "./components/Button";
 import { Header } from "./components/Header";
 import { Input } from "./components/Input";
 import { Letter } from "./components/Letter";
+import { Letters } from "./components/Letters";
 import { Tip } from "./components/Tip";
 import styles from "./utils/App.module.css";
 
@@ -32,6 +33,8 @@ function App() {
             <Button>Confirmar</Button>
           </div>
         </div>
+
+        <Letters />
       </main>
     </div>
   );

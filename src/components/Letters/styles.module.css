@@ -1,0 +1,17 @@
+.letters {
+  width: 100%;
+  border-top: 1px solid #c3c3c3;
+}
+
+.letters h5 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #32325f;
+  margin: 0.75rem 0;
+}
+
+.letters > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
