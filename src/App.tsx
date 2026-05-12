@@ -14,6 +14,7 @@ function App() {
   const [letters, setLetters] = useState<LetterType[]>([]);
   const [score, setScore] = useState(0);
   const [showConfetti, setShowConfetti] = useState(false);
+  const [showGameOver, setShowGameOver] = useState(false);
   const [challenge, setChallenge] = useState<Challenge | null>(() => {
     const index = Math.floor(Math.random() * WORDS.length);
     return WORDS[index];
@@ -28,6 +29,7 @@ function App() {
     setLetters([]);
     setScore(0);
     setShowConfetti(false);
+    setShowGameOver(false);
   };
 
   const maxAttempts = Math.round((challenge?.word.length ?? 0) * 1.7);
@@ -68,14 +70,15 @@ function App() {
   useEffect(() => {
     if (!challenge) return;
 
-    if (letters.length === maxAttempts) {
-      alert(`Fim de jogo! A palavra era "${challenge.word.toUpperCase()}"`);
-      startGame();
-    }
+    setTimeout(() => {
+      if (letters.length === maxAttempts) {
+        setShowGameOver(true);
+      }
 
-    if (score === challenge.word.length && score > 0) {
-      setShowConfetti(true);
-    }
+      if (score === challenge.word.length && score > 0) {
+        setShowConfetti(true);
+      }
+    }, 200);
   }, [score, letters, challenge, maxAttempts]);
 
   return (
@@ -90,6 +93,17 @@ function App() {
             startGame();
           }}
         />
+      )}
+      {showGameOver && (
+        <div className={styles.overlay}>
+          <div className={styles.modal}>
+            <h2>Fim de jogo!</h2>
+            <p>A palavra era: <strong>{challenge?.word.toUpperCase()}</strong></p>
+            <button className={styles.button} onClick={startGame}>
+              Jogar novamente
+            </button>
+          </div>
+        </div>
       )}
       <div className={styles.container}>
         <main>
