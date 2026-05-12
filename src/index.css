@@ -12,6 +12,7 @@ body {
 button {
   cursor: pointer;
   transition: filter 0.2s ease-in-out;
+  font-family: inherit;
 }
 
 button:hover {
