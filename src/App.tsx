@@ -98,7 +98,9 @@ function App() {
         <div className={styles.overlay}>
           <div className={styles.modal}>
             <h2>Fim de jogo!</h2>
-            <p>A palavra era: <strong>{challenge?.word.toUpperCase()}</strong></p>
+            <p>
+              A palavra era: <strong>{challenge?.word.toUpperCase()}</strong>
+            </p>
             <button className={styles.button} onClick={startGame}>
               Jogar novamente
             </button>
@@ -147,6 +149,14 @@ function App() {
 
           <Letters letters={letters} />
         </main>
+
+        <a
+          href="https://github.com/EvandroCalado"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          Feito com ♥ por Evandro Calado
+        </a>
       </div>
     </>
   );
