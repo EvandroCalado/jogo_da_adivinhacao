@@ -23,12 +23,12 @@
 
 .header > .restart > span {
   font-size: 1.12rem;
-  color: #9b9b9b;
+  color: var(--color-text-muted);
 }
 
 .header > .restart > span strong {
   font-size: 1.37rem;
-  color: #e8891c;
+  color: var(--color-accent);
 }
 
 .header > .restart > button img {

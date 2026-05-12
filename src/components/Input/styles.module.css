@@ -2,9 +2,9 @@
   width: 2.87rem;
   height: 2.87rem;
   border-radius: 0.43rem;
-  background-color: #ebebfc;
-  color: #6363db;
-  border: 2px solid #6363db;
+  background-color: var(--color-primary-light);
+  color: var(--color-primary);
+  border: 2px solid var(--color-primary);
   text-transform: uppercase;
   text-align: center;
   font-size: 1rem;

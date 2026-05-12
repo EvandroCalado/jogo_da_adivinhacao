@@ -2,8 +2,8 @@
   width: 3.37rem;
   height: 3.37rem;
   border-radius: 0.62rem;
-  background-color: #ebebfc;
-  color: #6363db;
+  background-color: var(--color-primary-light);
+  color: var(--color-primary);
   text-transform: uppercase;
   font-size: 2rem;
   font-weight: 700;
@@ -18,17 +18,17 @@
   border-radius: 0.43rem;
   font-size: 1.25rem;
   font-weight: 500;
-  border: 1px solid #6363db;
+  border: 1px solid var(--color-primary);
 }
 
 .letter-correct {
-  background-color: #e1f5ec;
-  border-color: #03ab4f;
-  color: #03ab4f;
+  background-color: var(--color-success-light);
+  border-color: var(--color-success);
+  color: var(--color-success);
 }
 
 .letter-wrong {
-  background-color: #ffcf62;
-  border-color: #691b0a;
-  color: #691b0a;
+  background-color: var(--color-warning);
+  border-color: var(--color-warning-dark);
+  color: var(--color-warning-dark);
 }
