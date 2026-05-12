@@ -17,9 +17,10 @@ export const Letter = ({
         ${styles.letter} 
         ${size === "small" && styles["letter-small"]} 
         ${color === "correct" && styles["letter-correct"]} 
-        ${color === "wrong" && styles["letter-wrong"]} `}
+        ${color === "wrong" && styles["letter-wrong"]} 
+        ${!value && styles["letter-hidden"]}`}
     >
-      <span>{value}</span>
+      <span>{value || "_"}</span>
     </div>
   );
 };
