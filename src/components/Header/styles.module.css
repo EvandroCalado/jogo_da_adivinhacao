@@ -39,3 +39,12 @@
 .header > .restart > button:hover img {
   scale: 1.1;
 }
+
+.header-title span {
+  color: var(--color-text-muted);
+  font-weight: 600;
+}
+
+.header-title h1 {
+  color: var(--color-primary);
+}

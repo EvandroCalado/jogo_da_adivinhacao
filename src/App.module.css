@@ -21,6 +21,10 @@
   border-radius: 0.75rem;
 }
 
+.container main h4 {
+  color: var(--color-text-muted);
+}
+
 .container .word {
   display: flex;
   justify-content: center;
@@ -117,11 +121,11 @@
 }
 
 a {
-  color: var(--color-primary);
+  color: var(--color-text-muted);
   text-decoration: none;
-  transition: color 0.2s;
+  transition: color 0.2s ease-in-out;
 }
 
 a:hover {
-  color: var(--color-primary-dark);
+  color: var(--color-accent);
 }

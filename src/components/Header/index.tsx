@@ -1,4 +1,3 @@
-import Logo from "../../assets/logo.svg";
 import styles from "./styles.module.css";
 import Restart from "../../assets/restart.svg";
 
@@ -11,7 +10,10 @@ type HeaderProps = {
 export const Header = ({ current, max, onRestart }: HeaderProps) => {
   return (
     <header className={styles.header}>
-      <img src={Logo} alt="Logo" />
+      <div className={styles["header-title"]}>
+        <span>Projeto</span>
+        <h1>Família em Ação</h1>
+      </div>
 
       <div className={styles.restart}>
         <span>

@@ -4,9 +4,9 @@
 }
 
 .letters h5 {
+  color: var(--color-text-muted);
   font-size: 1rem;
   font-weight: 600;
-  color: var(--color-text-heading);
   margin: 0.75rem 0;
 }
 
