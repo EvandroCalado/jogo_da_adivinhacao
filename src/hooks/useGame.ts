@@ -1,8 +1,8 @@
 import { useMemo, useState } from "react";
 import type { LetterType } from "../components/Letters";
-import { WORDS, type Challenge } from "../utils/words";
 import { normalizeWord } from "../utils/normalize";
-import { playCorrect, playWrong, playWin, playLose } from "../utils/sounds";
+import { playCorrect, playLose, playWin, playWrong } from "../utils/sounds";
+import { WORDS, type Challenge } from "../utils/words";
 
 const GUESS_FACTOR = 1.7;
 const MAX_UNIQUE = 26;

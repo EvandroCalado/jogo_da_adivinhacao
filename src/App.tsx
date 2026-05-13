@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Button } from "./components/Button";
 import { Header } from "./components/Header";
 import { Input } from "./components/Input";
@@ -49,7 +49,7 @@ function App() {
     return () => window.removeEventListener("keydown", handler);
   }, [showGameOver, showConfetti, startGame]);
 
-  const handleConfirm = useCallback(() => {
+  const handleConfirm = () => {
     if (!letter.trim()) {
       alert("Digite uma letra!");
       return;
@@ -57,7 +57,7 @@ function App() {
     confirmLetter(letter);
     setLetter("");
     inputRef.current?.focus();
-  }, [letter, confirmLetter]);
+  };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter") {
