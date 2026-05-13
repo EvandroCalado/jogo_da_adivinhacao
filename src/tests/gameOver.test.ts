@@ -38,7 +38,7 @@ describe("useGame game-over", () => {
     expect(result.current.attempts).toBe(3);
   });
 
-  it("duplicate guesses do NOT count toward game-over", () => {
+  it("duplicate guesses count toward game-over", () => {
     const { result } = renderHook(() => useGame());
 
     guess(result, "z"); // unique wrong, attempt 1, letters.length=1
@@ -48,29 +48,26 @@ describe("useGame game-over", () => {
     expect(result.current.showGameOver).toBe(false);
 
     guess(result, "z"); // duplicate, attempt 3, letters.length=1
-    // letters.length(1) < maxAttempts(3) → game-over NOT triggered
-    expect(result.current.showGameOver).toBe(false);
+    // attempts(3) >= maxAttempts(3) → game-over triggered
+    expect(result.current.showGameOver).toBe(true);
     expect(result.current.attempts).toBe(3);
     expect(result.current.letters.length).toBe(1);
   });
 
-  it("mix of correct, wrong, and duplicate guesses — win on attempt 7", () => {
+  it("duplicate at maxAttempts triggers game-over before win", () => {
     const { result } = renderHook(() => useGame());
 
     guess(result, "z"); // wrong, attempt 1, letters.length=1
-    guess(result, "q"); // correct, attempt 2, letters.length=2
-    guess(result, "z"); // dup, attempt 3, letters.length=2
-    guess(result, "x"); // wrong, attempt 4, letters.length=3
-    guess(result, "q"); // dup, attempt 5, letters.length=3
-    guess(result, "y"); // wrong, attempt 6, letters.length=4
-    // 4 unique guesses so far, maxAttempts=3 → game-over would trigger here
-    // But only if letters.length >= 3
+    expect(result.current.showGameOver).toBe(false);
 
+    guess(result, "q"); // correct, attempt 2, letters.length=2
+    expect(result.current.showGameOver).toBe(false);
+
+    guess(result, "z"); // dup, attempt 3, nextAttempts=3 >= maxAttempts=3 → game-over
     expect(result.current.showGameOver).toBe(true);
     expect(result.current.showConfetti).toBe(false);
 
-    // Now guess the winning letter on attempt 7
-    // Since game is already over, this guess is ignored
+    // Game is already over, remaining guesses are ignored
     guess(result, "a");
     expect(result.current.showConfetti).toBe(false);
     expect(result.current.showGameOver).toBe(true);

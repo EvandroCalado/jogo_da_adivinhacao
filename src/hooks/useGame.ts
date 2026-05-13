@@ -28,6 +28,10 @@ export function useGame() {
     () => normalizeWord(challenge.word),
     [challenge.word],
   );
+  const totalLetters = useMemo(
+    () => normalizedWord.replace(/[^A-Z]/g, "").length,
+    [normalizedWord],
+  );
 
   const startGame = () => {
     setChallenge(pickRandomWord());
@@ -43,12 +47,17 @@ export function useGame() {
     const value = normalizeWord(rawLetter);
     if (!value) return;
 
-    setAttempts((prev) => prev + 1);
+    const nextAttempts = attempts + 1;
+    setAttempts(nextAttempts);
 
     const existsLetter = letters.find((l) => l.value === value);
 
     if (existsLetter) {
       playWrong();
+      if (nextAttempts >= maxAttempts) {
+        setShowGameOver(true);
+        playLose();
+      }
       return;
     }
 
@@ -68,13 +77,13 @@ export function useGame() {
       playWrong();
     }
 
-    if (currentScore >= challenge.word.length && currentScore > 0) {
+    if (currentScore >= totalLetters && currentScore > 0) {
       setShowConfetti(true);
       playWin();
       return;
     }
 
-    if (updatedLetters.length >= maxAttempts) {
+    if (nextAttempts >= maxAttempts) {
       setShowGameOver(true);
       playLose();
     }
